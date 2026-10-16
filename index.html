@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>自分 ― あなたの前世ねんぴょう</title>
+<meta name="description" content="名前と誕生日と生まれた市町村区を入れると、あなたの前世の一生が年表で出てくる。縄文から昭和まで、日本の歴史のどこかに生きた、だれかの一生。">
+<meta name="theme-color" content="#2a211b">
+<meta property="og:title" content="自分 ― あなたの前世ねんぴょう">
+<meta property="og:description" content="あなたの前世は、どの時代の、どんな人だった？ 縄文から昭和まで、日本の歴史のどこかに生きた一生が年表で出てくる。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nasubi-no-oniwa.github.io/jibun/">
+<meta property="og:site_name" content="なすびのお庭">
+<meta property="og:image" content="https://nasubi-no-oniwa.github.io/jibun/icons/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="自分 ― あなたの前世ねんぴょう">
+<meta name="twitter:description" content="あなたの前世は、どの時代の、どんな人だった？ 縄文から昭和まで、日本の歴史のどこかに生きた一生が年表で出てくる。">
+<meta name="twitter:image" content="https://nasubi-no-oniwa.github.io/jibun/icons/ogp.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body><div class="wrap">
+<div class="top"><h1>自分</h1><p>あなたの前世の一生が、ここにある</p></div>
+<form id="f">
+<label>名前<input id="nm" placeholder="例：山田太郎" autocomplete="off" required></label>
+<label>誕生日<input id="bd" type="date" value="2000-01-01" required></label>
+<label>生まれた市町村区<input id="pl" placeholder="例：江東区、府中市、横浜市中区" autocomplete="off" required><span class="cand" id="cand"></span></label>
+<div class="err" id="err"></div>
+<button id="go" disabled>読みこみ中…</button>
+</form>
+<div id="out"></div>
+<p class="note">人生のできごとは、時代と土地に合わせて組み立てた架空のものです。紫の行は、その時代・その土地で実際にあったできごとです。子どものうちに亡くなる人の割合も、当時に合わせています。同じ名前・誕生日・市町村区なら、いつでも同じ前世が出ます。<br>
+市町村のデータ：国土数値情報（行政区域データ）、ROIS-DS人文学オープンデータ共同利用センター「歴史的行政区域データセットβ版」（CC BY 4.0）をもとに作成</p>
+<a class="back" href="https://nasubi-no-oniwa.github.io/">🍆 なすびのお庭（ほかのゲーム）</a>
+</div>
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body></html>
