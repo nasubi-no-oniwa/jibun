@@ -42,13 +42,13 @@
     yayoi: [['farm', '稲を育てるムラの民', 70], ['fish', '漁をするムラの民', 10], ['craft', '機織りと土器づくり', 12], ['chief', 'ムラの長の一族', 8]],
     kofun: [['farm', '田を耕す民', 70], ['labor', '古墳づくりに駆り出された民', 12], ['craft', '埴輪をつくる職人', 8], ['servant', '豪族に仕える者', 10]],
     asuka: [['farm', '口分田を耕す農民', 78], ['craft', '寺をつくる工人', 8], ['monk', '寺の僧', 4], ['official', '国府の下級役人', 10]],
-    nara: [['farm', '口分田を耕す農民', 76], ['sakimori', '防人に出た農民', 8], ['monk', '寺の僧', 4], ['official', '国府の下級役人', 7], ['craft', '都の職人', 5]],
-    heian: [['farm', '荘園で働く農民', 72], ['servant', '貴族の屋敷の下働き', 8], ['monk', '寺の僧', 5], ['bushi', '地方の武者', 7], ['noble', '下級貴族', 3], ['merchant', '市の商人', 5]],
-    kamakura: [['farm', '荘園の農民', 70], ['bushi', '御家人に仕える武士', 9], ['craft', '鍛冶職人', 6], ['merchant', '市の商人', 8], ['monk', '寺の僧', 7]],
-    muromachi: [['farm', '惣村の百姓', 68], ['bashaku', '馬借（荷を運ぶ人）', 8], ['craft', '職人', 8], ['merchant', '座の商人', 9], ['bushi', '国人に仕える武士', 7]],
-    sengoku: [['farm', '百姓', 66], ['ashigaru', '足軽', 14], ['craft', '鉄砲鍛冶', 4], ['merchant', '城下の商人', 9], ['monk', '寺の僧', 4], ['bushi', '武士', 3]],
-    edo: [['farm', '百姓', 78], ['merchant', '町人（商人）', 8], ['craft', '町人（職人）', 6], ['samurai', '武士', 5], ['fish', '漁師', 3]],
-    meiji: [['farm', '農家', 70], ['factory', '製糸工場の工女', 8, 'f'], ['merchant', '商店', 8], ['craft', '職人', 6], ['teacher', '小学校の先生', 3], ['soldier', '軍人', 3], ['pioneer', '北海道の開拓民', 2]],
+    nara: [['farm', '口分田を耕す農民', 76], ['sakimori', '防人に出た農民', 8, 'm'], ['monk', '寺の僧', 4], ['official', '国府の下級役人', 7], ['craft', '都の職人', 5]],
+    heian: [['farm', '荘園で働く農民', 72], ['servant', '貴族の屋敷の下働き', 8], ['monk', '寺の僧', 5], ['bushi', '地方の武者', 7, 'm'], ['noble', '下級貴族', 3], ['merchant', '市の商人', 5]],
+    kamakura: [['farm', '荘園の農民', 70], ['bushi', '御家人に仕える武士', 9, 'm'], ['craft', '鍛冶職人', 6], ['merchant', '市の商人', 8], ['monk', '寺の僧', 7]],
+    muromachi: [['farm', '惣村の百姓', 68], ['bashaku', '馬借（荷を運ぶ人）', 8, 'm'], ['craft', '職人', 8], ['merchant', '座の商人', 9], ['bushi', '国人に仕える武士', 7, 'm']],
+    sengoku: [['farm', '百姓', 66], ['ashigaru', '足軽', 14, 'm'], ['craft', '鉄砲鍛冶', 4], ['merchant', '城下の商人', 9], ['monk', '寺の僧', 4], ['bushi', '武士', 3, 'm']],
+    edo: [['farm', '百姓', 78], ['merchant', '町人（商人）', 8], ['craft', '町人（職人）', 6], ['samurai', '武士', 5, 'm'], ['fish', '漁師', 3]],
+    meiji: [['farm', '農家', 70], ['factory', '製糸工場の工女', 8, 'f'], ['merchant', '商店', 8], ['craft', '職人', 6], ['teacher', '小学校の先生', 3], ['soldier', '軍人', 3, 'm'], ['pioneer', '北海道の開拓民', 2]],
     taisho: [['farm', '農家', 55], ['factory', '工場の工員', 15], ['merchant', '商店', 10], ['office', '会社員', 8], ['teacher', '小学校の先生', 4], ['mine', '炭鉱夫', 4, 'm'], ['fish', '漁師', 4]],
     showa: [['farm', '農家', 35], ['factory', '工場の工員', 18], ['office', '会社員', 18], ['merchant', '商店', 12], ['teacher', '学校の先生', 5], ['mine', '炭鉱夫', 4, 'm'], ['fish', '漁師', 4], ['craft', '職人', 4]],
   };
@@ -87,7 +87,7 @@
     kodai: ['機織り', '田植え', '舟こぎ', '歌（和歌）を口ずさむこと', '馬の世話'],
     heian: ['笛', '機織り', '馬の世話', '薬草さがし', '字を読むこと'],
     chusei: ['わらじづくり', '刀研ぎ', '馬の世話', '薬草さがし', '囲碁'],
-    edo: ['そろばん', '字がきれい', 'わらじづくり', '三味線', '将棋', '大根を育てること', '釣り'],
+    edo: ['そろばん', '習字', 'わらじづくり', '三味線', '将棋', '大根を育てること', '釣り'],
     kindai: ['そろばん', '習字', '尺八', '将棋', '裁縫', '花札'],
     showa: ['そろばん', 'ラジオの修理', '自転車', '裁縫', '野球', '将棋', '歌謡曲'],
   };
@@ -172,7 +172,7 @@
     { g: ['edo'], t: '旅の芝居一座が村に来て、夢中で見た' },
     { g: ['edo'], t: 'はしかにかかり、三日三晩うなされたが助かった' },
     { g: ['edo'], t: '手習いの師匠に、字の筋がいいとほめられた' },
-    { g: ['kindai'], t: 'はじめて汽車を見て、走って追いかけた' },
+    { g: ['kindai'], yr: [1890, 1930], t: 'はじめて汽車を見て、走って追いかけた' },
     { g: ['kindai'], t: '学校の帰り道、道草をして日が暮れた' },
     { g: ['kindai', 'showa'], t: '赤痢がはやった年、近所の友だちを亡くした' },
     { g: ['showa'], yr: [1926, 1944], t: '紙芝居屋の拍子木の音を聞くと、走って集まった' },
@@ -213,7 +213,7 @@
     { g: ['kindai', 'showa'], t: 'はじめて{city}の町に出て、人の多さに目を回した' },
     { g: ['showa'], yr: [1950, 1975], t: '集団就職の列車で、{city}へ向かった' },
     { g: ['showa'], yr: [1946, 1988], t: 'ダンスホールで、はじめて踊った' },
-    { g: ['all'], t: '{city}で見たものの話を、村に帰って得意げにした' },
+    { g: ['edo', 'kindai', 'showa'], t: '{city}で見たものの話を、村に帰って得意げにした' },
     { g: ['old'], j: ['hunt'], t: 'はじめて大きな鹿をしとめ、ムラで祝ってもらった' },
     { g: ['old'], j: ['gather'], t: '土器の模様つけをまかされるようになった' },
     { g: ['old', 'kodai', 'heian', 'chusei', 'edo', 'kindai'], j: ['farm'], t: '一人前に田んぼをまかされるようになった' },
@@ -352,10 +352,13 @@
     q = String(q || '').replace(/\s/g, '');
     if (!q) return [];
     const out = [];
-    P.cur.forEach((c, i) => { const full = P.pref[c[1] - 1] + c[0]; if (c[0] === q || full === q || full.endsWith(q) && q.length >= 2) out.push(i); });
-    return out;
+    const exact = [];
+    P.cur.forEach((c, i) => { const full = P.pref[c[1] - 1] + c[0]; if (c[0] === q || full === q) exact.push(i); else if (full.endsWith(q) && q.length >= 2) out.push(i); });
+    return exact.length ? exact : out;
   };
   const CITY_BY_ERA = { edo: ['江戸', '大坂', '京'], kindai: ['東京', '大阪', '横浜'], showa: ['東京', '大阪', '名古屋'] };
+  // できごとの年に合った町の呼び名（1868年からは江戸ではなく東京）
+  const cityAt = y => { const c = CITY_BY_ERA[G[eraOf(y).k]]; return c ? c[Math.abs(y * 7) % c.length] : '都'; };
   function placeAt(ci, y) {
     const c = P.cur[ci], pn = P.pref[c[1] - 1];
     const now = pn + c[0];
@@ -381,8 +384,11 @@
     // 時代：その時代を生きた人の多さで選ぶ（あなたが生まれる前に亡くなっている人だけ）
     let era, y0, sex, life, early = 0, earlyDays = 0;
     for (let k = 0; k < 80; k++) {
-      era = wpick(ERAS, e => e.pop * Math.max(0, Math.min(e.b, by - 2) - e.a));
-      y0 = Math.floor(era.a + rnd() * (Math.min(era.b, by - 2) - era.a));
+      // 北海道は明治（1869年）より前は蝦夷地、沖縄は1879年より前は琉球王国。どちらも縄文か、それ以降だけにする
+      const pr0 = P.cur[ci][1], minY = pr0 === 1 ? 1869 : pr0 === 47 ? 1879 : -99999;
+      const lo = e => e.k === 'jomon' ? e.a : Math.max(e.a, minY);
+      era = wpick(ERAS, e => e.pop * Math.max(0, Math.min(e.b, by - 2) - lo(e)));
+      y0 = Math.floor(lo(era) + rnd() * (Math.min(era.b, by - 2) - lo(era)));
       const gg = G[era.k];
       // 子どものうちに亡くなる割合（1歳まで, 1〜14歳）
       const M = gg === 'old' ? [0.25, 0.25] : gg === 'edo' ? [0.18, 0.15] : gg === 'kindai' ? [0.15, 0.08] : gg === 'showa' ? (y0 < 1946 ? [0.10, 0.04] : [0.03, 0.01]) : [0.22, 0.20];
@@ -426,6 +432,7 @@
     const persS = PERS_S[pers] || '';
     if (early) {
       const parents = g === 'old' ? ['ムラの男', 'ムラの女'] : [pick(NAMES[g === 'old' ? 'kodai' : g].m), pick(NAMES[g === 'old' ? 'kodai' : g].f)];
+      if (parents.includes(nm)) parents[sex === 'm' ? 0 : 1] = (NAMES[g][sex].find(x => x !== nm) || parents[1]);   // 親と子が同じ名前にならないように
       const cause = pick(g === 'showa' && y0 >= 1950 ? ['肺炎', '生まれつきの心臓の病', '高い熱'] : EARLY_CAUSE[g]), when = pick(SEASON);
       const ctx2 = { food, skill, dream: pick(['父のような' + job[1].replace(/の.*$/, ''), '{city}の商人'.replace('{city}', city), '強い人', '母のような人']) };
       const T = [];
@@ -460,22 +467,24 @@
     const T = [];
     const add = (age, t, kind) => { if (age <= life && t) T.push({ y: y0 + age, age, t, kind: kind || '' }); };
     const ctx = { pet: pick(g === 'old' ? ['子犬', '子犬'] : ['犬', '猫', '犬', '小鳥', '猫']), pay: ['old','kodai','heian','chusei'].includes(g) ? '取り分' : '給金', gift: ['old','kodai','heian','chusei'].includes(g) ? '持って帰った' : '買って帰った', fireside: ['old','kodai'].includes(g) ? '火のそば' : '縁側', home: g === 'old' ? 'ムラ' : (['kindai','showa'].includes(g) ? '町' : '村'), rescuer: order > 1 ? (chance(0.5) ? '兄' : '姉') : '通りかかった大人', city, food, skill, place: placeAt(ci, y0).txt.replace(/^今の/, '') };
-    const choose = (list, n, ay) => { const ok = list.filter(x => (x.g.includes('all') || x.g.includes(g)) && (!x.j || x.j.includes(jk)) && (!x.s || x.s === sex) && (!x.yr || (y0 + ay >= x.yr[0] - 3 && y0 + ay <= x.yr[1]))); const out = []; for (let k = 0; k < n && ok.length; k++) { const i = Math.floor(rnd() * ok.length); out.push(ok.splice(i, 1)[0]); } return out; };
+    const gAt = a => G[eraOf(y0 + a).k];
+    const fillAt = (t, a) => fill(t, Object.assign({}, ctx, { city: cityAt(y0 + a) }));
+    const choose = (list, n, ay) => { const ga = gAt(ay); const ok = list.filter(x => (x.g.includes('all') || x.g.includes(ga)) && (!x.j || x.j.includes(jk)) && (!x.s || x.s === sex) && (!x.yr || (y0 + ay >= x.yr[0] - 3 && y0 + ay <= x.yr[1]))); const out = []; for (let k = 0; k < n && ok.length; k++) { const i = Math.floor(rnd() * ok.length); out.push(ok.splice(i, 1)[0]); } return out; };
     const birthPlace = placeAt(ci, y0);
     add(0, birthPlace.txt + 'で、' + job[1] + 'の家の' + (g === 'old' ? '子' : ordTxt) + 'として生まれる', 'birth');
     ctx.sibtxt = sib ? 'きょうだいは' + (sib + 1) + '人。いつも' + (order > 1 ? '上の子のあとをついて歩いた' : '下の子の面倒を見ていた') : 'ひとりっ子で、母にかわいがられた';
-    choose(CHILD, 2, 7).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0, 3) : ri(3 + i * 4, 6 + i * 5); if (!x.yr || y0 + a <= x.yr[1]) add(a, fill(x.t, ctx)); });
-    choose(YOUTH, 2, 16).forEach((x, i) => { const a = ri(13 + i * 4, 17 + i * 4); if (!x.yr || (y0 + a >= x.yr[0] && y0 + a <= x.yr[1])) add(a, fill(x.t, ctx)); });
+    choose(CHILD, 2, 7).forEach((x, i) => { const a = /入学|通いはじめ/.test(x.t) ? ri(6, 7) : x.yr ? Math.max(x.yr[0] - y0, 3) : ri(3 + i * 4, 6 + i * 5); if (x.yr && y0 + a < x.yr[0]) return; if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a)); });
+    choose(YOUTH, 2, 16).forEach((x, i) => { const a = ri(13 + i * 4, 17 + i * 4); if (!x.yr || (y0 + a >= x.yr[0] && y0 + a <= x.yr[1])) add(a, fillAt(x.t, a)); });
     if (married) add(marryAge, (g === 'old' ? spouse + 'と夫婦になる' : spouse + 'と夫婦になる'), 'love');
     if (kids) {
       const a = marryAge + ri(1, 3);
       add(a, 'はじめての子が生まれる' + (kids > 1 ? '。このあと、子は全部で' + kids + '人' + (lost ? '（うち' + lost + '人は幼くして亡くなった）' : '') : ''), 'love');
     }
     ctx.spousetxt = ''; ctx.childtxt = '';
-    choose(ADULT.filter(x => !/\{(spousetxt|childtxt)\}/.test(x.t)), 3, 35).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 25) : ri(25 + i * 7, 31 + i * 8); if (!x.yr || y0 + a <= x.yr[1]) add(a, fill(x.t, ctx)); });
+    choose(ADULT.filter(x => !/\{(spousetxt|childtxt)\}/.test(x.t)), 3, 35).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 25) : ri(25 + i * 7, 31 + i * 8); if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a)); });
     if (life >= 55) {
       ctx.grandtxt = kids ? 'はじめての孫が生まれた' : '近所の子どもたちに慕われた';
-      choose(LATE, 2, 60).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 52) : ri(52 + i * 5, Math.max(53 + i * 5, Math.min(life - 1, 70 + i * 6))); if (!x.yr || y0 + a <= x.yr[1]) add(a, fill(x.t, ctx)); });
+      choose(LATE, 2, 60).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 52) : ri(52 + i * 5, Math.max(53 + i * 5, Math.min(life - 1, 70 + i * 6))); if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a)); });
     }
     // 本当にあったできごと（生きていた間に、その土地や全国で）
     const pr = P.cur[ci][1];
@@ -511,8 +520,9 @@
     if (hz.length) tags.push(hz.length > 1 ? 'いくつもの災いをくぐり抜け' : pick(['大きな災いをくぐり抜け', 'つらい年を生きのび']));
     if (kids >= 5) tags.push(kids + '人の子を育て'); else if (kids) tags.push('子を育て');
     if (!married) tags.push('ひとりで生き');
-    const end = warDeath ? '戦地で散った' : life >= 75 ? '長生きした' : life < 35 ? '短く駆け抜けた' : '静かに終えた';
-    const summary = (g === 'old' ? 'ムラで生まれ、' : '生まれた土地で') + (tags.length ? tags.join('、') + '、' : '') + life + '年の一生を' + end + '。';
+    const end = warDeath ? life + '年の一生を戦地で終えた' : life >= 75 ? life + '年の長い一生を終えた' : life < 35 ? life + '年の短い一生を駆け抜けた' : life + '年の一生を静かに終えた';
+    const moved = tags.length && /ふるさと|遠く/.test(tags[0]);
+    const summary = (g === 'old' ? 'ムラで生まれ、' : moved ? '' : '生まれた土地で') + (tags.length ? tags.join('、') + '、' : '') + end + '。';
     const aliasA = [food + '好きの、' + persS + job[1].replace(/（.*）/, ''), persS + job[1].replace(/（.*）/, '') + '、' + skill + 'の名人', '「' + phrase + '」が口ぐせの' + job[1].replace(/（.*）/, '')];
     return {
       famous: false, early: false, alias: pick(aliasA), mood: moodOf(e.k, y0), summary, last: warDeath ? '' : lastWord, jicon: JOB_ICON[jk] || '🌾',
