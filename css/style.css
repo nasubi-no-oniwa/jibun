@@ -52,3 +52,25 @@ td.y{white-space:nowrap;width:4.6em;color:var(--sub)}td.a{white-space:nowrap;wid
 .share-row .x{background:#111}
 .top a{color:#f3e6cc}
 .back{display:block;text-align:center;color:#cbb99c;font-size:12px;margin-top:10px}
+
+/* ことばの切りかえ */
+.langs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.langs button{font:700 12.5px "Shippori Mincho","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;letter-spacing:0;background:transparent;color:#f3e6cc;border:1px solid rgba(243,230,204,.45);border-radius:999px;padding:3px 12px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:#f3e6cc;color:var(--bg);border-color:#f3e6cc}
+/* 言葉ごとの文字 */
+html[data-lang="zh"] body{font-family:"Noto Serif TC","Shippori Mincho","PMingLiU",serif}
+html[data-lang="ko"] body{font-family:"Nanum Myeongjo","Noto Serif KR","Batang",serif}
+html[data-lang="en"] body{font-family:"Shippori Mincho",Georgia,"Times New Roman",serif}
+html[data-lang="en"] .top h1,html[data-lang="ko"] .top h1{letter-spacing:.06em}
+html[data-lang="en"] button,html[data-lang="ko"] button{letter-spacing:.02em}
+html[data-lang="en"] .era,html[data-lang="ko"] .era{letter-spacing:.06em}
+html[data-lang="en"] .lbl,html[data-lang="ko"] .lbl{letter-spacing:.12em}
+html[data-lang="en"] .name{letter-spacing:.01em;font-size:28px}
+html[data-lang="en"] .seal small,html[data-lang="ko"] .seal small{letter-spacing:0;font-size:9px;max-width:58px;text-align:center;line-height:1.1}
+html[data-lang="en"] .ev .y,html[data-lang="ko"] .ev .y{flex-basis:4.3em}
+html[data-lang="en"] .ev li{font-size:13px}
+html[data-lang="en"] th{white-space:normal;width:6.4em}
+html[data-lang="ko"] th{width:6em}
+html[data-lang="ko"] .sum,html[data-lang="ko"] .ev li,html[data-lang="ko"] .alias{word-break:keep-all}
+html[data-lang="en"] .sum{font-size:14.5px}
+html[data-lang="en"] .fam,html[data-lang="ko"] .fam{letter-spacing:.06em}

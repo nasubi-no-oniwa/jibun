@@ -363,14 +363,16 @@
     const c = P.cur[ci], pn = P.pref[c[1] - 1];
     const now = pn + c[0];
     if (y >= 1889) {
-      if (y >= c[4]) return { txt: now, now };
+      if (y >= c[4]) return { txt: now, now, sp: { ci, k: 'now' } };
       const cand = P.old.filter(o => o[4] === ci && o[2] <= y && y < o[3]);
-      if (cand.length) { const o = cand[0]; return { txt: pn + (o[1] || '') + o[0], now, old: o[0] }; }
-      return { txt: now + 'のあたり', now };
+      if (cand.length) { const o = cand[0]; return { txt: pn + (o[1] || '') + o[0], now, old: o[0], sp: { ci, k: 'old', oi: P.old.indexOf(o) } }; }
+      return { txt: now + 'のあたり', now, sp: { ci, k: 'near' } };
     }
-    return { txt: '今の' + now + 'のあたり', now };
+    return { txt: '今の' + now + 'のあたり', now, sp: { ci, k: 'nownear' } };
   }
 
+  // 訳す側（js/life_i18n.js）が使う中身
+  Z._ = { ERAS, eraOf, G, yearText, get P() { return P; }, FAMOUS, NAMES, SURNAMES, SAMURAI_M, JOMON_NICK, BUILD, MARKS, PERS, PERS_S, FOOD, PHRASE, SKILL, LAST, HIST, CHILD, YOUTH, ADULT, LATE, DEATH, EARLY_CAUSE, SEASON, KID_MEMO, KID_MEMO2, MOOD, JOBS, CITY_BY_ERA };
   // ---------- 前世をつくる ----------
   Z.make = function (name, birth, ci) {
     const by = +String(birth).slice(0, 4) || 2000;
@@ -434,20 +436,27 @@
       const parents = g === 'old' ? ['ムラの男', 'ムラの女'] : [pick(NAMES[g === 'old' ? 'kodai' : g].m), pick(NAMES[g === 'old' ? 'kodai' : g].f)];
       if (parents.includes(nm)) parents[sex === 'm' ? 0 : 1] = (NAMES[g][sex].find(x => x !== nm) || parents[1]);   // 親と子が同じ名前にならないように
       const cause = pick(g === 'showa' && y0 >= 1950 ? ['肺炎', '生まれつきの心臓の病', '高い熱'] : EARLY_CAUSE[g]), when = pick(SEASON);
-      const ctx2 = { food, skill, dream: pick(['父のような' + job[1].replace(/の.*$/, ''), '{city}の商人'.replace('{city}', city), '強い人', '母のような人']) };
+      const dreams = ['父のような' + job[1].replace(/の.*$/, ''), '{city}の商人'.replace('{city}', city), '強い人', '母のような人'];
+      const ctx2 = { food, skill, dream: pick(dreams) };
+      const rec = { type: 'early', ci, by, y0, life, early, earlyDays, eraK: e.k, g, jk, job: job[1], sex, nm, parents, cause, when, food, skill, city, dreamI: dreams.indexOf(ctx2.dream), bp: placeAt(ci, y0).sp };
       const T = [];
-      const named = !(early === 1 && earlyDays < 7) && g !== 'old';
-      T.push({ y: y0, age: 0, t: placeAt(ci, y0).txt + 'で、' + job[1] + 'の家に生まれる。父は' + parents[0] + '、母は' + parents[1], kind: 'birth' });
+      const named = !(early === 1 && earlyDays < 7) && g !== 'old'; rec.named = named;
+      T.push({ y: y0, age: 0, t: placeAt(ci, y0).txt + 'で、' + job[1] + 'の家に生まれる。父は' + parents[0] + '、母は' + parents[1], kind: 'birth', s: ['ebirth'] });
       if (early === 1) {
-        if (earlyDays >= 7 && g !== 'old') T.push({ y: y0, age: 0, t: '生まれて七日目、「' + nm + '」と名づけられた', kind: '' });
-        if (earlyDays > 60) T.push({ y: y0, age: 0, t: fill(pick(KID_MEMO.slice(1)), ctx2), kind: '' });
-        T.push({ y: y0, age: 0, t: '生まれて' + (earlyDays <= 30 ? earlyDays + '日目' : Math.round(earlyDays / 30) + 'か月') + '、' + when + '、' + cause + 'で息をひきとった。' + (named ? '' : '名前はまだつけられていなかった。') + pick(['母は、その子のために小さな着物を縫っていた', '父は、小さな墓に野の花をそなえた', 'きょうだいたちは、しばらくその子の話をした', '家の者は、その年の' + when.replace(/の.*$/, '') + 'を忘れなかった']), kind: 'death' });
+        if (earlyDays >= 7 && g !== 'old') T.push({ y: y0, age: 0, t: '生まれて七日目、「' + nm + '」と名づけられた', kind: '', s: ['ename'] });
+        if (earlyDays > 60) { const km = pick(KID_MEMO.slice(1)); T.push({ y: y0, age: 0, t: fill(km, ctx2), kind: '', s: ['etpl', km] }); }
+        const ends1 = ['母は、その子のために小さな着物を縫っていた', '父は、小さな墓に野の花をそなえた', 'きょうだいたちは、しばらくその子の話をした', '家の者は、その年の' + when.replace(/の.*$/, '') + 'を忘れなかった'];
+        const e1 = pick(ends1);
+        T.push({ y: y0, age: 0, t: '生まれて' + (earlyDays <= 30 ? earlyDays + '日目' : Math.round(earlyDays / 30) + 'か月') + '、' + when + '、' + cause + 'で息をひきとった。' + (named ? '' : '名前はまだつけられていなかった。') + e1, kind: 'death', s: ['edeath1', ends1.indexOf(e1)] });
       } else {
-        T.push({ y: y0 + Math.min(1, life), age: Math.min(1, life), t: fill(pick(KID_MEMO), ctx2), kind: '' });
-        if (life >= 5) T.push({ y: y0 + ri(4, life), age: 0, t: fill(pick(KID_MEMO2), ctx2), kind: '' });
+        const km1 = pick(KID_MEMO);
+        T.push({ y: y0 + Math.min(1, life), age: Math.min(1, life), t: fill(km1, ctx2), kind: '', s: ['etpl', km1] });
+        if (life >= 5) { const yy = y0 + ri(4, life), km2 = pick(KID_MEMO2); T.push({ y: yy, age: 0, t: fill(km2, ctx2), kind: '', s: ['etpl', km2] }); }
         const hs = HIST.filter(h => h.y >= y0 && h.y <= y0 + life && (!h.r || h.r.includes(P.cur[ci][1])));
-        if (hs.length) { const h = hs[0]; T.push({ y: h.y, age: h.y - y0, t: h.t, kind: 'hist' }); }
-        T.push({ y: y0 + life, age: life, t: when + '、' + cause + 'のため亡くなる。' + life + '歳。' + pick(['最後に「かあちゃん」と小さく呼んだ', '最後まで、好きだった' + food + 'の話をしていた', '母の腕の中で眠るように息をひきとった', 'きょうだいが手をにぎっていた']), kind: 'death' });
+        if (hs.length) { const h = hs[0]; T.push({ y: h.y, age: h.y - y0, t: h.t, kind: 'hist', s: ['hist', h.t] }); }
+        const ends2 = ['最後に「かあちゃん」と小さく呼んだ', '最後まで、好きだった' + food + 'の話をしていた', '母の腕の中で眠るように息をひきとった', 'きょうだいが手をにぎっていた'];
+        const e2 = pick(ends2);
+        T.push({ y: y0 + life, age: life, t: when + '、' + cause + 'のため亡くなる。' + life + '歳。' + e2, kind: 'death', s: ['edeath2', ends2.indexOf(e2)] });
       }
       T.forEach(x => { x.age = x.y - y0; });
       T.sort((a, b) => a.y - b.y || (a.kind === 'death') - (b.kind === 'death'));
@@ -460,54 +469,55 @@
         chips: [yearText(y0) + '生まれ', '享年 ' + lifeTxt, nowPlace],
         prof: [['時代', e.n], ['生まれ', yearText(y0) + '、' + placeAt(ci, y0).txt], ['家', job[1] + 'の家。父は' + parents[0] + '、母は' + parents[1]], ['生きた時間', lifeTxt], ['亡くなった理由', cause]],
         table: T, last: '', after: (by - y0 - life) + '年後、同じ土地（' + nowPlace + '）で、あなたが生まれた。',
-        share: '私の前世は、' + e.n + 'に' + lifeTxt + 'だけ生きた子どもでした。',
+        share: '私の前世は、' + e.n + 'に' + lifeTxt + 'だけ生きた子どもでした。', rec,
       };
     }
     // 年表
     const T = [];
-    const add = (age, t, kind) => { if (age <= life && t) T.push({ y: y0 + age, age, t, kind: kind || '' }); };
+    const add = (age, t, kind, s) => { if (age <= life && t) T.push({ y: y0 + age, age, t, kind: kind || '', s }); };
     const ctx = { pet: pick(g === 'old' ? ['子犬', '子犬'] : ['犬', '猫', '犬', '小鳥', '猫']), pay: ['old','kodai','heian','chusei'].includes(g) ? '取り分' : '給金', gift: ['old','kodai','heian','chusei'].includes(g) ? '持って帰った' : '買って帰った', fireside: ['old','kodai'].includes(g) ? '火のそば' : '縁側', home: g === 'old' ? 'ムラ' : (['kindai','showa'].includes(g) ? '町' : '村'), rescuer: order > 1 ? (chance(0.5) ? '兄' : '姉') : '通りかかった大人', city, food, skill, place: placeAt(ci, y0).txt.replace(/^今の/, '') };
     const gAt = a => G[eraOf(y0 + a).k];
     const fillAt = (t, a) => fill(t, Object.assign({}, ctx, { city: cityAt(y0 + a) }));
     const choose = (list, n, ay) => { const ga = gAt(ay); const ok = list.filter(x => (x.g.includes('all') || x.g.includes(ga)) && (!x.j || x.j.includes(jk)) && (!x.s || x.s === sex) && (!x.yr || (y0 + ay >= x.yr[0] - 3 && y0 + ay <= x.yr[1]))); const out = []; for (let k = 0; k < n && ok.length; k++) { const i = Math.floor(rnd() * ok.length); out.push(ok.splice(i, 1)[0]); } return out; };
     const birthPlace = placeAt(ci, y0);
-    add(0, birthPlace.txt + 'で、' + job[1] + 'の家の' + (g === 'old' ? '子' : ordTxt) + 'として生まれる', 'birth');
+    add(0, birthPlace.txt + 'で、' + job[1] + 'の家の' + (g === 'old' ? '子' : ordTxt) + 'として生まれる', 'birth', ['birth']);
     ctx.sibtxt = sib ? 'きょうだいは' + (sib + 1) + '人。いつも' + (order > 1 ? '上の子のあとをついて歩いた' : '下の子の面倒を見ていた') : 'ひとりっ子で、母にかわいがられた';
-    choose(CHILD, 2, 7).forEach((x, i) => { const a = /入学|通いはじめ/.test(x.t) ? ri(6, 7) : x.yr ? Math.max(x.yr[0] - y0, 3) : ri(3 + i * 4, 6 + i * 5); if (x.yr && y0 + a < x.yr[0]) return; if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a)); });
-    choose(YOUTH, 2, 16).forEach((x, i) => { const a = ri(13 + i * 4, 17 + i * 4); if (!x.yr || (y0 + a >= x.yr[0] && y0 + a <= x.yr[1])) add(a, fillAt(x.t, a)); });
-    if (married) add(marryAge, (g === 'old' ? spouse + 'と夫婦になる' : spouse + 'と夫婦になる'), 'love');
+    choose(CHILD, 2, 7).forEach((x, i) => { const a = /入学|通いはじめ/.test(x.t) ? ri(6, 7) : x.yr ? Math.max(x.yr[0] - y0, 3) : ri(3 + i * 4, 6 + i * 5); if (x.yr && y0 + a < x.yr[0]) return; if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a), '', ['tpl', x.t, cityAt(y0 + a)]); });
+    choose(YOUTH, 2, 16).forEach((x, i) => { const a = ri(13 + i * 4, 17 + i * 4); if (!x.yr || (y0 + a >= x.yr[0] && y0 + a <= x.yr[1])) add(a, fillAt(x.t, a), '', ['tpl', x.t, cityAt(y0 + a)]); });
+    if (married) add(marryAge, (g === 'old' ? spouse + 'と夫婦になる' : spouse + 'と夫婦になる'), 'love', ['marry']);
     if (kids) {
       const a = marryAge + ri(1, 3);
-      add(a, 'はじめての子が生まれる' + (kids > 1 ? '。このあと、子は全部で' + kids + '人' + (lost ? '（うち' + lost + '人は幼くして亡くなった）' : '') : ''), 'love');
+      add(a, 'はじめての子が生まれる' + (kids > 1 ? '。このあと、子は全部で' + kids + '人' + (lost ? '（うち' + lost + '人は幼くして亡くなった）' : '') : ''), 'love', ['kid1']);
     }
     ctx.spousetxt = ''; ctx.childtxt = '';
-    choose(ADULT.filter(x => !/\{(spousetxt|childtxt)\}/.test(x.t)), 3, 35).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 25) : ri(25 + i * 7, 31 + i * 8); if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a)); });
+    choose(ADULT.filter(x => !/\{(spousetxt|childtxt)\}/.test(x.t)), 3, 35).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 25) : ri(25 + i * 7, 31 + i * 8); if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a), '', ['tpl', x.t, cityAt(y0 + a)]); });
     if (life >= 55) {
       ctx.grandtxt = kids ? 'はじめての孫が生まれた' : '近所の子どもたちに慕われた';
-      choose(LATE, 2, 60).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 52) : ri(52 + i * 5, Math.max(53 + i * 5, Math.min(life - 1, 70 + i * 6))); if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a)); });
+      choose(LATE, 2, 60).forEach((x, i) => { const a = x.yr ? Math.max(x.yr[0] - y0 + ri(0, 3), 52) : ri(52 + i * 5, Math.max(53 + i * 5, Math.min(life - 1, 70 + i * 6))); if (!x.yr || y0 + a <= x.yr[1]) add(a, fillAt(x.t, a), '', ['tpl', x.t, cityAt(y0 + a)]); });
     }
     // 本当にあったできごと（生きていた間に、その土地や全国で）
     const pr = P.cur[ci][1];
     const hs = HIST.filter(h => h.y > y0 + 4 && h.y <= y0 + life && (!h.r || h.r.includes(pr)));
     // 地域のできごとを先に、多すぎるときはしぼる
     hs.sort((a, b) => (b.r ? 1 : 0) - (a.r ? 1 : 0));
-    hs.slice(0, 5).forEach(h => add(h.y - y0, h.t, 'hist'));
+    hs.slice(0, 5).forEach(h => add(h.y - y0, h.t, 'hist', ['hist', h.t]));
     // 戦争（昭和の男）
     let warDeath = false;
     if (sex === 'm' && y0 >= 1890 && y0 <= 1927 && y0 + 18 <= 1945) {
       const ay = Math.max(1937, y0 + 20) - y0;
       if (ay <= life && chance(0.5)) {
-        add(ay, '召集され、戦地へ向かった', 'hist');
+        add(ay, '召集され、戦地へ向かった', 'hist', ['call']);
         if (chance(0.25) && y0 + ay + 2 <= 1945) { life = ay + ri(1, Math.min(4, 1945 - y0 - ay)); warDeath = true; }
-        else if (y0 + life > 1946) add(1946 - y0, '戦地から帰ってきた', 'hist');
+        else if (y0 + life > 1946) add(1946 - y0, '戦地から帰ってきた', 'hist', ['back']);
       }
     }
     // 明治の合併（場所の名前が変わる）
-    if (y0 < 1889 && y0 + life >= 1889) { const p2 = placeAt(ci, 1889); if (p2.old || p2.txt !== birthPlace.txt) add(1889 - y0, '町村制が始まり、村は「' + p2.txt + '」になった', 'hist'); }
+    if (y0 < 1889 && y0 + life >= 1889) { const p2 = placeAt(ci, 1889); if (p2.old || p2.txt !== birthPlace.txt) add(1889 - y0, '町村制が始まり、村は「' + p2.txt + '」になった', 'hist', ['merge', p2.sp]); }
     // 最期
     const cause = warDeath ? '戦地で' : pick(DEATH[g]);
-    const deathTxt = warDeath ? '戦地で亡くなった。' + life + '歳' : (cause === '年をとって' ? '年をとって、静かに亡くなる。' : cause + 'のため亡くなる。') + life + '歳。最後の言葉は「' + pick(LAST) + '」';
-    T.push({ y: y0 + life, age: life, t: deathTxt, kind: 'death' });
+    const lastPick = warDeath ? '' : pick(LAST);
+    const deathTxt = warDeath ? '戦地で亡くなった。' + life + '歳' : (cause === '年をとって' ? '年をとって、静かに亡くなる。' : cause + 'のため亡くなる。') + life + '歳。最後の言葉は「' + lastPick + '」';
+    T.push({ y: y0 + life, age: life, t: deathTxt, kind: 'death', s: ['death'] });
     T.sort((a, b) => a.y - b.y || (a.kind === 'death') - (b.kind === 'death'));
     // 同じ年の重なりをへらす
     const T2 = []; T.forEach(x => { if (!T2.some(z => z.t === x.t)) T2.push(x); });
@@ -524,8 +534,10 @@
     const moved = tags.length && /ふるさと|遠く/.test(tags[0]);
     const summary = (g === 'old' ? 'ムラで生まれ、' : moved ? '' : '生まれた土地で') + (tags.length ? tags.join('、') + '、' : '') + end + '。';
     const aliasA = [food + '好きの、' + persS + job[1].replace(/（.*）/, ''), persS + job[1].replace(/（.*）/, '') + '、' + skill + 'の名人', '「' + phrase + '」が口ぐせの' + job[1].replace(/（.*）/, '')];
+    const alias = pick(aliasA);
+    const rec = { type: 'normal', ci, by, y0, life, eraK: e.k, g, jk, job: job[1], sex, nm, sur, nick, height, hnote, pers, persS, food, phrase, skill, build, mark, sib, order, ordTxt, married, marryAge, spouse, kids, lost, city, ctx, warDeath, cause, lastPick, tags, moved, aliasI: aliasA.indexOf(alias), bp: birthPlace.sp, after };
     return {
-      famous: false, early: false, alias: pick(aliasA), mood: moodOf(e.k, y0), summary, last: warDeath ? '' : lastWord, jicon: JOB_ICON[jk] || '🌾',
+      famous: false, early: false, alias, mood: moodOf(e.k, y0), summary, last: warDeath ? '' : lastWord, jicon: JOB_ICON[jk] || '🌾',
       chips: [yearText(y0) + '生まれ', '享年 ' + life, nowPlace],
       era: e.n, name: (sur ? sur + ' ' : '') + nm, nick, sex, job: job[1], born: y0, life,
       prof: [
@@ -542,17 +554,17 @@
       ],
       table: T2,
       after: '亡くなってから' + after + '年後、同じ土地（' + nowPlace + '）で、あなたが生まれた。',
-      share: '私の前世は、' + e.n + 'の' + nowPlace.replace(/^.+?[都道府県]/, '') + 'あたりに生まれた' + job[1] + (nm.startsWith('（') ? '' : '「' + nm + '」') + '。' + life + '歳まで生きた。',
+      share: '私の前世は、' + e.n + 'の' + nowPlace.replace(/^.+?[都道府県]/, '') + 'あたりに生まれた' + job[1] + (nm.startsWith('（') ? '' : '「' + nm + '」') + '。' + life + '歳まで生きた。', rec,
     };
   };
   function famous(f, by) {
-    const T = [{ y: f.b, age: 0, t: f.at + 'に生まれる', kind: 'birth' }].concat(f.ev.map(([y, t]) => ({ y, age: y - f.b, t, kind: y === f.d ? 'death' : 'hist' })));
+    const T = [{ y: f.b, age: 0, t: f.at + 'に生まれる', kind: 'birth', s: ['fbirth'] }].concat(f.ev.map(([y, t]) => ({ y, age: y - f.b, t, kind: y === f.d ? 'death' : 'hist', s: ['hist', t] })));
     return {
       famous: true, early: false, alias: 'まさかの、あの人', mood: moodOf(eraOf(f.b).k, f.b), summary: f.at + 'に生まれた、' + f.job + '。', last: '', jicon: '⭐', chips: [f.b + '年生まれ', '享年 ' + (f.d - f.b), f.at],
       era: eraOf(f.b).n, name: f.n, job: f.job, born: f.b, life: f.d - f.b,
       prof: [['時代', eraOf(f.b).n], ['生まれ', f.b + '年、' + f.at], ['仕事', f.job], ['亡くなった年', f.d + '年']],
       table: T, after: f.n + 'が亡くなってから' + (by - f.d) + '年後、あなたが生まれた。',
-      share: '私の前世は……まさかの「' + f.n + '」でした。',
+      share: '私の前世は……まさかの「' + f.n + '」でした。', rec: { type: 'famous', f, by },
     };
   }
 })();

@@ -34,20 +34,22 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body><div class="wrap">
-<div class="top"><h1>自分</h1><p>あなたの前世の一生が、ここにある</p></div>
+<div class="top"><h1 data-i="title">自分</h1><p data-i="tagline">あなたの前世の一生が、ここにある</p><div class="langs" role="group" aria-label="Language"><button type="button" data-lang="ja">日本語</button><button type="button" data-lang="en">English</button><button type="button" data-lang="zh">繁中</button><button type="button" data-lang="ko">한국어</button></div></div>
 <form id="f">
-<label>名前<input id="nm" placeholder="例：山田太郎" autocomplete="off" required></label>
-<label>誕生日<input id="bd" type="date" value="2000-01-01" required></label>
-<label>生まれた市町村区<input id="pl" placeholder="例：江東区、府中市、横浜市中区" autocomplete="off" required><span class="cand" id="cand"></span></label>
+<label><span data-i="f_name">名前</span><input id="nm" data-ip="ph_name" placeholder="例：山田太郎" autocomplete="off" required></label>
+<label><span data-i="f_birth">誕生日</span><input id="bd" type="date" value="2000-01-01" required></label>
+<label><span data-i="f_place">生まれた市町村区</span><input id="pl" data-ip="ph_place" placeholder="例：江東区、府中市、横浜市中区" autocomplete="off" required><span class="cand" id="cand"></span></label>
 <div class="err" id="err"></div>
 <button id="go" disabled>読みこみ中…</button>
 </form>
 <div id="out"></div>
-<p class="note">人生のできごとは、時代と土地に合わせて組み立てた架空のものです。紫の行は、その時代・その土地で実際にあったできごとです。子どものうちに亡くなる人の割合も、当時に合わせています。同じ名前・誕生日・市町村区なら、いつでも同じ前世が出ます。<br>
+<p class="note" data-ih="note">人生のできごとは、時代と土地に合わせて組み立てた架空のものです。紫の行は、その時代・その土地で実際にあったできごとです。子どものうちに亡くなる人の割合も、当時に合わせています。同じ名前・誕生日・市町村区なら、いつでも同じ前世が出ます。<br>
 市町村のデータ：国土数値情報（行政区域データ）、ROIS-DS人文学オープンデータ共同利用センター「歴史的行政区域データセットβ版」（CC BY 4.0）をもとに作成</p>
-<a class="back" href="https://nasubi-no-oniwa.github.io/">🍆 なすびのお庭（ほかのゲーム）</a>
+<a class="back" href="https://nasubi-no-oniwa.github.io/" data-i="back_home">🍆 なすびのお庭（ほかのゲーム）</a>
 </div>
 <canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+<script src="js/i18n.js"></script>
 <script src="js/engine.js"></script>
+<script src="js/life_i18n.js"></script>
 <script src="js/main.js"></script>
 </body></html>
