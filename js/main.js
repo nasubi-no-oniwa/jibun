@@ -1,6 +1,13 @@
 // =============================================
 //  自分（前世ねんぴょう）  画面と、投稿用の画像
 // =============================================
+
+// Xの投稿で引用するツイート（なすびのお庭の管理ページ quote/ で日本語・英語を貼りかえられる）
+var NQ=window.__nq||(window.__nq={q:{}});if(!NQ.f){NQ.f=1;fetch('https://ft-red-default-rtdb.asia-southeast1.firebasedatabase.app/xquote/g/jibun.json').then(r=>r.json()).then(d=>{if(d&&typeof d==='object')NQ.q=d;}).catch(()=>{});}
+function quoteURL(){let l='';try{if(typeof lang==='string')l=lang;}catch(e){}if(!l)l=document.documentElement.lang||'ja';const u=(l.slice(0,2)==='ja'?NQ.q.ja:NQ.q.en)||'';return /^https:\/\/x\.com\/[A-Za-z0-9_]{1,15}\/status\/\d{5,25}$/.test(u)?u:'';}
+function xIntent(text,url){const q=quoteURL();return 'https://x.com/intent/post?text='+encodeURIComponent(q?text+'\n'+url:text)+'&url='+encodeURIComponent(q||url);}
+function xIntentT(text){const q=quoteURL();return 'https://x.com/intent/post?text='+encodeURIComponent(text)+(q?'&url='+encodeURIComponent(q):'');}
+function nqS(o){const q=quoteURL();if(!q||!o)return o;o=Object.assign({},o);o.text=(o.text||'')+(o.url?'\n'+o.url:'')+'\n'+q;delete o.url;return o;}
 (function () {
   const T = (k, v) => I18N.t(k, v);
   const LG = () => I18N.lang;
@@ -131,8 +138,8 @@
   const shareText = () => last.L.share + '\n' + T('hashtag') + '\n' + URL_GAME + (LG() === 'ja' ? '' : '?lang=' + LG());
   async function share() {
     const blob = await draw(); const file = new File([blob], 'zense.png', { type: 'image/png' });
-    try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: shareText() }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
-    download(blob); window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()), '_blank');
+    try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share(nqS({ files: [file], text: shareText() })); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+    download(blob); window.open(xIntentT(shareText()), '_blank');
   }
   async function save() { download(await draw()); }
   function download(b) { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'zense.png'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
